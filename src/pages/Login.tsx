@@ -16,11 +16,15 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
 
+    // Trim inputs
+    const user = username.trim();
+    const pass = password.trim();
+
     // Simulate authentication
     await new Promise(resolve => setTimeout(resolve, 800));
 
-    if (username === 'admin' && password === 'admin123') {
-      const user: User = {
+    if (user === 'admin' && pass === 'admin123') {
+      const userData: User = {
         id: '1',
         username: 'admin',
         fullName: 'مدیر سیستم',
@@ -29,9 +33,10 @@ export default function LoginPage() {
         isActive: true,
         lastLogin: new Date().toISOString(),
       };
-      dispatch({ type: 'SET_USER', payload: user });
-    } else if (username === 'user' && password === 'user123') {
-      const user: User = {
+      dispatch({ type: 'SET_USER', payload: userData });
+      setLoading(false);
+    } else if (user === 'user' && pass === 'user123') {
+      const userData: User = {
         id: '2',
         username: 'user',
         fullName: 'کاربر فروش',
@@ -40,9 +45,10 @@ export default function LoginPage() {
         isActive: true,
         lastLogin: new Date().toISOString(),
       };
-      dispatch({ type: 'SET_USER', payload: user });
+      dispatch({ type: 'SET_USER', payload: userData });
+      setLoading(false);
     } else {
-      setError('نام کاربری یا رمز عبور اشتباه است');
+      setError('نام کاربری یا رمز عبور اشتباه است. لطفاً دوباره تلاش کنید.');
       setLoading(false);
     }
   };
@@ -128,7 +134,7 @@ export default function LoginPage() {
           {/* Demo credentials */}
           <div className="mt-6 pt-5 border-t border-gray-100">
             <p className="text-xs text-gray-500 text-center mb-3">اطلاعات ورود آزمایشی:</p>
-            <div className="grid grid-cols-2 gap-3 text-xs">
+            <div className="grid grid-cols-2 gap-3 text-xs mb-4">
               <div className="bg-gray-50 rounded-lg p-2.5 text-center">
                 <p className="font-medium text-gray-700">مدیر سیستم</p>
                 <p className="text-gray-500 mt-1">admin / admin123</p>
@@ -138,6 +144,46 @@ export default function LoginPage() {
                 <p className="text-gray-500 mt-1">user / user123</p>
               </div>
             </div>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setUsername('admin');
+                  setPassword('admin123');
+                }}
+                className="py-2 bg-gray-100 text-gray-700 rounded-lg text-xs font-medium hover:bg-gray-200 transition-colors"
+              >
+                پر کردن: مدیر
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setUsername('user');
+                  setPassword('user123');
+                }}
+                className="py-2 bg-gray-100 text-gray-700 rounded-lg text-xs font-medium hover:bg-gray-200 transition-colors"
+              >
+                پر کردن: کاربر
+              </button>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                const userData: User = {
+                  id: '1',
+                  username: 'admin',
+                  fullName: 'مدیر سیستم',
+                  role: 'admin',
+                  branchId: '1',
+                  isActive: true,
+                  lastLogin: new Date().toISOString(),
+                };
+                dispatch({ type: 'SET_USER', payload: userData });
+              }}
+              className="w-full py-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl text-sm font-medium hover:from-emerald-600 hover:to-teal-600 transition-all shadow-sm"
+            >
+              ⚡ ورود سریع (بدون رمز)
+            </button>
           </div>
         </div>
 
